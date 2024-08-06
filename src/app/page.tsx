@@ -1,113 +1,196 @@
-import Image from "next/image";
+// src/app/page.tsx
+// "use client"
+// import { useState, useEffect } from 'react';
+// import { useRouter } from "next/navigation";
+// import { auth } from '../firebase';
+// import { onAuthStateChanged, User } from 'firebase/auth';
+// import Link from 'next/link';
+
+// function Home() {
+//   const router = useRouter();
+//   const [user, setUser] = useState<User | null>(null);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+//       setUser(currentUser);
+//       setLoading(false);
+//     });
+
+//     return () => unsubscribe();
+//   }, []);
+
+//   if (loading) {
+//     return <div className="loading">Loading...</div>;
+//   }
+
+//   return (
+//     <div className="container" style={{backgroundColor: '#1E1E1E'}}>
+//       <main className="main">
+//         <h1 className="title" style ={{color:'white'}}>Welcome to Company Directory</h1>
+//         <p className="description" style ={{color:'white'}}>
+//           Explore and discover information about various companies in our comprehensive directory.
+//         </p>
+
+//         {user ? (
+//           <Link href="/companies" className="button" style ={{color:'white'}}>
+//             Go to Companies
+//           </Link>
+//         ) : (
+//           <Link href="/signin" className="button" style ={{color:'white'}}>
+//             Sign In
+//           </Link>
+//         )}
+//       </main>
+
+//       <style jsx>{`
+//         .container {
+//           min-height: 100vh;
+//           padding: 0 0.5rem;
+//           display: flex;
+//           flex-direction: column;
+//           justify-content: center;
+//           align-items: center;
+//           background-color: #ffffff;
+//           color: #000000;
+//         }
+//         .main {
+//           padding: 5rem 0;
+//           flex: 1;
+//           display: flex;
+//           flex-direction: column;
+//           justify-content: center;
+//           align-items: center;
+//           max-width: 800px;
+//           text-align: center;
+//         }
+//         .title {
+//           margin: 0;
+//           line-height: 1.15;
+//           font-size: 4rem;
+//           font-weight: 700;
+//         }
+//         .description {
+//           line-height: 1.5;
+//           font-size: 1.5rem;
+//           margin: 1rem 0;
+//         }
+//         .button {
+//           background-color: #000000;
+//           color: #ffffff;
+//           border: none;
+//           padding: 0.75rem 1.5rem;
+//           font-size: 1rem;
+//           cursor: pointer;
+//           transition: background-color 0.3s ease;
+//           text-decoration: none;
+//           margin-top: 1rem;
+//         }
+//         .button:hover {
+//           background-color: #333333;
+//         }
+//         .loading {
+//           display: flex;
+//           justify-content: center;
+//           align-items: center;
+//           height: 100vh;
+//           font-size: 1.5rem;
+//         }
+//       `}</style>
+//     </div>
+//   );
+// }
+
+// export default Home;
+// "use client"
+// import { useState, useEffect } from 'react';
+// import { useRouter } from "next/navigation";
+// import { auth } from '../firebase';
+// import { onAuthStateChanged, User } from 'firebase/auth';
+// import Link from 'next/link';
+// import styles from './page.module.css';
+
+// export default function Home() {
+//   const router = useRouter();
+//   const [user, setUser] = useState<User | null>(null);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+//       setUser(currentUser);
+//       setLoading(false);
+//     });
+
+//     return () => unsubscribe();
+//   }, []);
+
+//   if (loading) {
+//     return <div className={styles.loading}>Loading...</div>;
+//   }
+
+//   return (
+//     <div className={styles.container}>
+//       <main className={styles.main}>
+//         <h1 className={styles.title}>Welcome to Company Directory</h1>
+//         <p className={styles.description}>
+//           Explore and discover information about various companies in our comprehensive directory.
+//         </p>
+// {/* 
+//         {user ? (
+//           <Link href="/companies" className={styles.button}>
+//             Go to Companies
+//           </Link>
+//         ) : (
+//           <Link href="/signin" className={styles.button}>
+//             Sign In
+//           </Link>
+//         )} */}
+//         <Link href="/companies" className={styles.button}>
+//             Go to Companies
+//           </Link>
+//       </main>
+//     </div>
+//   );
+// }
+
+"use client"
+import { useState, useEffect } from 'react';
+import { useRouter } from "next/navigation";
+import { auth } from '../firebase';
+import { onAuthStateChanged, User } from 'firebase/auth';
+import Link from 'next/link';
+import styles from './page.module.css';
 
 export default function Home() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setLoading(false);
+      if (user) {
+        router.push('/companies');
+      }
+    });
+
+    return () => unsubscribe();
+  }, [router]);
+
+  if (loading) {
+    return <div className={styles.loading}>Loading...</div>;
+  }
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
+    <div className={styles.container}>
+      <main className={styles.main}>
+        <h1 className={styles.title}>Welcome to Company Directory</h1>
+        <p className={styles.description}>
+          Explore and discover information about various companies in our comprehensive directory.
         </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+        <Link href="/companies" className={styles.button}>
+          Go to Companies
+        </Link>
+      </main>
+    </div>
   );
 }
