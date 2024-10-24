@@ -1,33 +1,4 @@
-// src/hooks/useAuth.js
-// import { useState, useEffect } from 'react';
-// import { onAuthStateChanged } from 'firebase/auth';
-// import { auth } from '../firebase'; // Updated import path
 
-// export default function useAuth() {
-//   const [user, setUser] = useState(null);
-
-//   useEffect(() => {
-//     const unsubscribe = onAuthStateChanged(auth, (user) => {
-//       if (user) {
-//         // User is signed in
-//         setUser({
-//           uid: user.uid,
-//           email: user.email,
-//           displayName: user.displayName,
-//           // Add any other user properties you need
-//         });
-//       } else {
-//         // User is signed out
-//         setUser(null);
-//       }
-//     });
-
-//     // Cleanup subscription on unmount
-//     return () => unsubscribe();
-//   }, []);
-
-//   return { user };
-// }
 import { useState, useEffect } from 'react';
 import { auth } from '../firebase';
 import { onAuthStateChanged, getIdTokenResult } from 'firebase/auth';
